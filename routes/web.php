@@ -8,7 +8,7 @@ Route::get('/', function () {
     return auth()->check()
         ? redirect()->route('dashboard')
         : view('welcome');
-});
+})->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
