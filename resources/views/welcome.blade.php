@@ -18,7 +18,7 @@
                         </div>
 
                         <div>
-                            <p class="space-muted text-xs tracking-[0.32em] md:text-sm">CHALLENGE UI x EASYCOLOC</p>
+                            <p class="space-muted text-xs tracking-[0.32em] md:text-sm">when worst coms to worst team comes fiest</p>
                             <h1 class="space-title mt-3 text-4xl font-extrabold leading-none md:text-6xl">EasyColoc</h1>
                             <p class="space-muted mt-3 max-w-xl text-sm md:text-base">
                                 Gérez les dépenses communes, équilibrez automatiquement les dettes, et suivez les paiements sans calcul manuel.
@@ -88,36 +88,36 @@
             <section class="space-panel p-4 md:p-7">
                 <div class="grid gap-4 md:grid-cols-4 md:grid-rows-2">
                     <div class="gallery-item md:row-span-1">
-                        <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=80"
-                             alt="Galaxy"
+                        <img src="{{ asset('images/home-gallery/balance.jpg') }}"
+                             alt="Budget and balance calculation"
                              class="h-full w-full object-cover" />
                         <span class="gallery-tag">Balance</span>
                     </div>
 
                     <div class="gallery-item md:row-span-1">
-                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80"
-                             alt="Nebula"
+                        <img src="{{ asset('images/home-gallery/settlements.jpg') }}"
+                             alt="Mobile payment settlement"
                              class="h-full w-full object-cover" />
                         <span class="gallery-tag">Settlements</span>
                     </div>
 
                     <div class="gallery-item md:col-span-2 md:row-span-2">
-                        <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=1200&q=80"
-                             alt="Space scene"
+                        <img src="{{ asset('images/home-gallery/colocation-hub.jpg') }}"
+                             alt="Shared apartment living room"
                              class="h-full w-full object-cover" />
                         <span class="gallery-tag">Colocation Hub</span>
                     </div>
 
                     <div class="gallery-item md:row-span-1">
-                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=900&q=80"
-                             alt="Moon"
+                        <img src="{{ asset('images/home-gallery/members.jpg') }}"
+                             alt="Colocation members together"
                              class="h-full w-full object-cover" />
                         <span class="gallery-tag">Members</span>
                     </div>
 
                     <div class="gallery-item md:row-span-1">
-                        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80"
-                             alt="Shooting star"
+                        <img src="{{ asset('images/home-gallery/expenses.jpg') }}"
+                             alt="Expense tracking and bills"
                              class="h-full w-full object-cover" />
                         <span class="gallery-tag">Expenses</span>
                     </div>
