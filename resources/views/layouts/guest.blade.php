@@ -15,16 +15,23 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="space-body font-sans antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-4">
+        @php($wideAuth = request()->routeIs('login') || request()->routeIs('register'))
+        <div class="min-h-screen flex flex-col items-center px-4 py-6 {{ $wideAuth ? 'justify-center' : 'sm:justify-center sm:pt-0' }}">
             <div>
                 <a href="/">
                     <x-application-logo class="w-20 h-20 fill-current text-indigo-100" />
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 space-panel auth-glow overflow-hidden sm:rounded-2xl">
-                {{ $slot }}
-            </div>
+            @if ($wideAuth)
+                <div class="w-full max-w-6xl mt-4">
+                    {{ $slot }}
+                </div>
+            @else
+                <div class="w-full sm:max-w-md mt-6 px-6 py-4 space-panel auth-glow overflow-hidden sm:rounded-2xl">
+                    {{ $slot }}
+                </div>
+            @endif
         </div>
     </body>
 </html>
