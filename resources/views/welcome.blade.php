@@ -18,7 +18,7 @@
                         </div>
 
                         <div>
-                            <p class="space-muted text-xs tracking-[0.32em] md:text-sm">when worst coms to worst team comes fiest</p>
+                            <p class="space-muted text-xs tracking-[0.32em] md:text-sm">When it matters most, teams and squad come first.</p>
                             <h1 class="space-title mt-3 text-4xl font-extrabold leading-none md:text-6xl">EasyColoc</h1>
                             <p class="space-muted mt-3 max-w-xl text-sm md:text-base">
                                 Gérez les dépenses communes, équilibrez automatiquement les dettes, et suivez les paiements sans calcul manuel.

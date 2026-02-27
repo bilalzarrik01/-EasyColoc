@@ -5,6 +5,7 @@
 
             <h1 class="auth-title">Log In</h1>
             <p class="auth-subtitle">Access your colocation space and continue managing shared expenses.</p>
+            <a href="{{ route('home') }}" class="auth-link mt-3 inline-flex text-sm">&larr; Back to home</a>
 
             <form method="POST" action="{{ route('login') }}" class="mt-8 space-y-6">
                 @csrf
@@ -56,7 +57,7 @@
         </div>
 
         <div class="auth-visual-panel">
-            <img src="{{ asset('images/image.png') }}" alt="Decorative plant illustration for authentication page" />
+            <img src="{{ asset('images/logo.png') }}" alt="Decorative logo for authentication page" />
         </div>
     </section>
 </x-guest-layout>

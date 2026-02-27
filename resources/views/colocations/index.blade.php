@@ -31,19 +31,30 @@
                 @if ($activeColocations->isEmpty())
                     <p class="text-indigo-100/85">You are not in any active colocation yet.</p>
                 @else
-                    <div class="divide-y divide-indigo-200/20">
+                    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach ($activeColocations as $colocation)
-                            <div class="py-4 flex items-center justify-between">
-                                <div>
-                                    <p class="font-semibold text-indigo-50">{{ $colocation->name }}</p>
-                                    <p class="text-sm text-indigo-100/85">
-                                        Role: {{ strtoupper($colocation->pivot->role) }}
-                                    </p>
+                            <div class="space-card p-5 flex flex-col gap-4">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="min-w-0">
+                                        <p class="text-lg font-semibold text-indigo-50 truncate">{{ $colocation->name }}</p>
+                                        <p class="mt-1 text-sm text-indigo-100/85">
+                                            Role: {{ strtoupper($colocation->pivot->role) }}
+                                        </p>
+                                    </div>
+                                    <span class="space-chip px-3 py-1 text-xs font-semibold text-indigo-50">
+                                        Active
+                                    </span>
                                 </div>
-                                <a href="{{ route('colocations.show', $colocation) }}"
-                                   class="space-button px-4 py-2 text-sm font-medium">
-                                    Open
-                                </a>
+
+                                <div class="flex items-center justify-between gap-3">
+                                    <span class="text-xs text-indigo-100/80">
+                                        Joined: {{ $colocation->pivot->joined_at ? \Carbon\Carbon::parse($colocation->pivot->joined_at)->format('Y-m-d') : '-' }}
+                                    </span>
+                                    <a href="{{ route('colocations.show', $colocation) }}"
+                                       class="space-button inline-flex items-center px-4 py-2 text-sm font-medium">
+                                        Open
+                                    </a>
+                                </div>
                             </div>
                         @endforeach
                     </div>

@@ -1,8 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="space-title font-semibold text-xl text-indigo-50 leading-tight">
-            {{ $colocation->name }}
-        </h2>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <h2 class="space-title font-semibold text-xl text-indigo-50 leading-tight">
+                {{ $colocation->name }}
+            </h2>
+            <a href="{{ route('colocations.index') }}"
+               class="text-sm text-indigo-100/85 hover:text-indigo-50 underline underline-offset-4">
+                Back to list
+            </a>
+        </div>
     </x-slot>
 
     <div class="py-8">
@@ -19,16 +25,28 @@
                 </div>
             @endif
 
+            @php
+                $memberCount = $colocation->activeMembers->count();
+                $categoryCount = $colocation->categories->count();
+                $filteredExpenseCount = $expenses->count();
+                $pendingCount = $pendingSettlements->count();
+                $pendingTotal = (float) $pendingSettlements->sum('amount');
+            @endphp
+
             <div class="space-panel sm:rounded-2xl p-6">
-                <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap items-start justify-between gap-4">
                     <div>
                         <p class="text-sm text-indigo-100/85">Owner: {{ $colocation->owner->name }}</p>
                         <p class="text-sm text-indigo-100/85">Status: {{ strtoupper($colocation->status) }}</p>
+                        <p class="mt-2 text-xs text-indigo-100/80">
+                            {{ $selectedMonth !== '' ? "Viewing month: $selectedMonth" : 'Viewing: all months' }}
+                        </p>
                     </div>
+
                     <div class="flex items-center gap-2">
                         @if ($colocation->owner_id === auth()->id())
                             <a href="{{ route('colocations.edit', $colocation) }}"
-                               class="space-button inline-flex items-center px-3 py-2 text-sm">
+                               class="space-button inline-flex items-center px-4 py-2 text-sm font-medium">
                                 Edit
                             </a>
 
@@ -36,7 +54,7 @@
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit"
-                                        class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-500">
+                                        class="inline-flex items-center rounded-full bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500">
                                     Cancel
                                 </button>
                             </form>
@@ -45,17 +63,41 @@
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit"
-                                        class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-500">
+                                        class="inline-flex items-center rounded-full bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500">
                                     Leave
                                 </button>
                             </form>
                         @endif
                     </div>
                 </div>
+
+                <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+                    <div class="space-card p-4">
+                        <p class="text-xs text-indigo-100/85 uppercase tracking-wider">Members</p>
+                        <p class="mt-2 text-2xl font-semibold text-indigo-50">{{ $memberCount }}</p>
+                    </div>
+                    <div class="space-card p-4">
+                        <p class="text-xs text-indigo-100/85 uppercase tracking-wider">Categories</p>
+                        <p class="mt-2 text-2xl font-semibold text-indigo-50">{{ $categoryCount }}</p>
+                    </div>
+                    <div class="space-card p-4">
+                        <p class="text-xs text-indigo-100/85 uppercase tracking-wider">Expenses</p>
+                        <p class="mt-2 text-2xl font-semibold text-indigo-50">{{ $filteredExpenseCount }}</p>
+                    </div>
+                    <div class="space-card p-4">
+                        <p class="text-xs text-indigo-100/85 uppercase tracking-wider">Pending</p>
+                        <p class="mt-2 text-2xl font-semibold text-indigo-50">{{ $pendingCount }}</p>
+                    </div>
+                    <div class="space-card p-4">
+                        <p class="text-xs text-indigo-100/85 uppercase tracking-wider">Pending total</p>
+                        <p class="mt-2 text-2xl font-semibold text-indigo-50">{{ number_format($pendingTotal, 2) }}</p>
+                    </div>
+                </div>
             </div>
 
+            <div class="lg:columns-2 lg:gap-6">
             @if ($colocation->owner_id === auth()->id() && $colocation->status === 'active')
-                <div class="space-panel sm:rounded-2xl p-6">
+                <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                     <h3 class="space-title text-lg font-medium text-indigo-50 mb-4">Categories</h3>
 
                     <form method="POST" action="{{ route('categories.store', $colocation) }}" class="flex flex-wrap items-end gap-3 mb-4">
@@ -97,7 +139,7 @@
             @endif
 
             @if ($colocation->owner_id === auth()->id() && $colocation->status === 'active')
-                <div class="space-panel sm:rounded-2xl p-6">
+                <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                     <h3 class="space-title text-lg font-medium text-indigo-50 mb-4">Invite a member</h3>
                     <form method="POST" action="{{ route('invitations.store', $colocation) }}" class="flex flex-wrap items-end gap-3">
                         @csrf
@@ -119,7 +161,7 @@
             @endif
 
             @if ($colocation->status === 'active')
-                <div class="space-panel sm:rounded-2xl p-6">
+                <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                     <h3 class="space-title text-lg font-medium text-indigo-50 mb-4">Add expense</h3>
                     <form method="POST" action="{{ route('expenses.store', $colocation) }}" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         @csrf
@@ -193,7 +235,7 @@
                 </div>
             @endif
 
-            <div class="space-panel sm:rounded-2xl p-6">
+            <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                 <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <h3 class="space-title text-lg font-medium text-indigo-50">Expenses</h3>
 
@@ -261,7 +303,7 @@
                 @endif
             </div>
 
-            <div class="space-panel sm:rounded-2xl p-6">
+            <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                 <h3 class="space-title text-lg font-medium text-indigo-50 mb-4">Balances</h3>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-indigo-200/20">
@@ -289,7 +331,7 @@
                 </div>
             </div>
 
-            <div class="space-panel sm:rounded-2xl p-6">
+            <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                 <h3 class="space-title text-lg font-medium text-indigo-50 mb-4">Who owes who</h3>
 
                 @if ($pendingSettlements->isEmpty())
@@ -333,7 +375,7 @@
                 @endif
             </div>
 
-            <div class="space-panel sm:rounded-2xl p-6">
+            <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                 <h3 class="space-title text-lg font-medium text-indigo-50 mb-4">Paid settlements (last 10)</h3>
 
                 @if ($paidSettlements->isEmpty())
@@ -364,7 +406,7 @@
                 @endif
             </div>
 
-            <div class="space-panel sm:rounded-2xl p-6">
+            <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                 <h3 class="space-title text-lg font-medium text-indigo-50 mb-4">Active members</h3>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-indigo-200/20">
@@ -404,7 +446,7 @@
                 </div>
             </div>
 
-            <div class="space-panel sm:rounded-2xl p-6">
+            <div class="space-panel break-inside-avoid mb-6 sm:rounded-2xl p-6">
                 <h3 class="space-title text-lg font-medium text-indigo-50 mb-4">Invitations</h3>
 
                 @if ($colocation->invitations->isEmpty())
@@ -446,6 +488,7 @@
                         </table>
                     </div>
                 @endif
+            </div>
             </div>
         </div>
     </div>
