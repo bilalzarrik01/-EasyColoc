@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileController;
@@ -14,7 +15,7 @@ Route::get('/', function () {
         : view('welcome');
 })->name('home');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -42,5 +43,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('invitations/{token}/accept', [InvitationController::class, 'accept'])->name('invitations.accept');
     Route::patch('invitations/{token}/refuse', [InvitationController::class, 'refuse'])->name('invitations.refuse');
 });
+
+Route::middleware(['auth', 'active', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function (): void {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::patch('/users/{user}/ban', [AdminDashboardController::class, 'ban'])->name('users.ban');
+        Route::patch('/users/{user}/unban', [AdminDashboardController::class, 'unban'])->name('users.unban');
+        Route::patch('/users/{user}/deactivate', [AdminDashboardController::class, 'deactivate'])->name('users.deactivate');
+        Route::patch('/users/{user}/activate', [AdminDashboardController::class, 'activate'])->name('users.activate');
+    });
 
 require __DIR__.'/auth.php';

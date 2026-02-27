@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'is_global_admin',
         'is_banned',
+        'is_active',
         'reputation',
     ];
 
@@ -50,6 +51,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_global_admin' => 'boolean',
             'is_banned' => 'boolean',
+            'is_active' => 'boolean',
         ];
     }
 
