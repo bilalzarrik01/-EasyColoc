@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Colocation;
 use App\Models\Invitation;
 use App\Models\User;
+use App\Mail\InvitationMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -52,18 +53,12 @@ class InvitationController extends Controller
             'expires_at' => now()->addDays(7),
         ]);
 
-        $link = route('invitations.show', $invitation->token);
-
         try {
-            $html = view('emails.invitation', [
-                'inviterName' => $user->name,
-                'colocationName' => $colocation->name,
-                'invitationUrl' => $link,
-            ])->render();
-
-            Mail::html($html, function ($message) use ($email): void {
-                $message->to($email)->subject('EasyColoc invitation');
-            });
+            Mail::to($email)->send(new InvitationMail(
+                inviterName: $user->name,
+                colocationName: $colocation->name,
+                invitationUrl: $invitation->invitationUrl(),
+            ));
         } catch (Throwable $exception) {
             report($exception);
 

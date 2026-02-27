@@ -34,4 +34,9 @@ class Invitation extends Model
     {
         return $this->belongsTo(User::class, 'invited_by');
     }
+
+    public function invitationUrl(): string
+    {
+        return route('invitations.show', $this->token);
+    }
 }
