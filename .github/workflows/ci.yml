@@ -7,6 +7,21 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: easycoloc_test
+          MYSQL_USER: easycoloc
+          MYSQL_PASSWORD: easycoloc
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout
@@ -26,7 +41,24 @@ jobs:
           cp .env.example .env
           php artisan key:generate --ansi
 
+      - name: Run migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: easycoloc_test
+          DB_USERNAME: easycoloc
+          DB_PASSWORD: easycoloc
+        run: php artisan migrate --force
+
       - name: Run tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: easycoloc_test
+          DB_USERNAME: easycoloc
+          DB_PASSWORD: easycoloc
         run: composer test
 
   build-assets:
